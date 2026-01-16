@@ -60,7 +60,7 @@ fun Application.module() {
     install(ContentNegotiation) { json(json) }
     install(SSE)
     install(CORS) {
-        allowHost("localhost:3000", schemes = listOf("http"))
+        allowHost("localhost", schemes = listOf("http"))
         allowHost("suajili.vercel.app", schemes = listOf("https"))
 
         allowMethod(HttpMethod.Options)
