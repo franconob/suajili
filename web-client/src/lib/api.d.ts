@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/io.ktor.server.http.content.TailcardSelector@1b1637e1/static/{...}": {
+    "/io.ktor.server.http.content.TailcardSelector@54e81b21/static/{...}": {
         parameters: {
             query?: never;
             header?: never;
@@ -29,32 +29,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: never;
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/messages": {
+    "/messages/{conversationId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -90,7 +65,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/chat": {
+    "/chat/{conversationId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -107,11 +82,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Message"];
-                };
-            };
+            requestBody?: never;
             responses: {
                 /** @description Accepted */
                 200: {
@@ -144,7 +115,17 @@ export interface paths {
                 cookie?: never;
             };
             requestBody?: never;
-            responses: never;
+            responses: {
+                /** @description Stream of messages */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+            };
         };
         put?: never;
         post?: never;

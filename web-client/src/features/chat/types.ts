@@ -1,7 +1,9 @@
-import type { components } from "@/src/lib/api";
+import type { components } from "@/src/lib/api.d";
 
-export type Message = components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Message"];
-export type Role = components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Role"];
+export type Message =
+  components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Message"];
+export type Role =
+  components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Role"];
 
 export interface ChatHistory {
   id: string;
