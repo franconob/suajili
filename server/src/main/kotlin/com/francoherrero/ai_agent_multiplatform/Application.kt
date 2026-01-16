@@ -145,7 +145,7 @@ fun Application.module() {
             call.application.launch {
                 for (chunk in chunks) {
                     ChatBus.emit(ChatStreamEvent.Delta(conversationId, chunk))
-                    delay(60)
+                    delay(70)
                 }
 
                 ChatBus.emit(ChatStreamEvent.Done(conversationId))
