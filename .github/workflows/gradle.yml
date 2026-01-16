@@ -16,7 +16,7 @@ on:
 env:
   PROJECT_ID: ultimate-walker-484513-r3
   REGION: us-central1
-  REPOSITORY: suajili
+  REPOSITORY: suajili-server
   SERVICE: ktor-server
   IMAGE: us-central1-docker.pkg.dev/ultimate-walker-484513-r3/suajili/ktor-server
 
