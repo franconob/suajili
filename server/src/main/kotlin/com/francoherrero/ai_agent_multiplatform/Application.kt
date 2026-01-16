@@ -61,6 +61,7 @@ fun Application.module() {
     install(SSE)
     install(CORS) {
         allowHost("localhost:3000", schemes = listOf("http"))
+        allowHost("suajili.vercel.app", schemes = listOf("https"))
 
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
@@ -95,6 +96,8 @@ fun Application.module() {
 
         route("/api.json") { openApi() }
         route("/swagger") { swaggerUI("/api.json") }
+
+        get("/health") { call.respondText("ok") }
 
         get("/messages/{conversationId}", {
             description = "Get message history"

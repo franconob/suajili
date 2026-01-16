@@ -1,0 +1,12 @@
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+# Copy the prebuilt jar from your repo workspace (produced by Gradle)
+COPY server/build/libs/*.jar /app/app.jar
+
+# Platform will usually set PORT; keep a default for local runs
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["sh", "-c", "java -jar /app/app.jar"]
