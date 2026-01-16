@@ -32,6 +32,7 @@ import io.ktor.server.sse.sse
 import io.ktor.sse.ServerSentEvent
 import io.ktor.sse.ServerSentEventMetadata
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -156,18 +157,38 @@ fun Application.module() {
 
 
         sse("/chat/stream") {
+            // Helpful headers for proxies
+            call.response.headers.append(HttpHeaders.CacheControl, "no-cache")
+            call.response.headers.append(HttpHeaders.Connection, "keep-alive")
+
             val conversationId = call.request.queryParameters["conversationId"] ?: "default"
 
-            val stream = ChatBus.stream(conversationId)
+            // 1) Send something immediately so Cloud Run + browser see bytes
+            send(ServerSentEvent(event = "ready", data = "ok"))
 
-            stream.collect {
-                when (it) {
-                    is ChatStreamEvent.Delta ->
-                        send(ServerSentEvent(event = "delta", data = it.text))
-
-                    is ChatStreamEvent.Done ->
-                        send(ServerSentEvent(event = "done", data = "done"))
+            // 2) Keepalive pings (every 15s)
+            val pingJob = launch {
+                while (isActive) {
+                    delay(15_000)
+                    // data can be anything; keep it tiny
+                    send(ServerSentEvent(event = "ping", data = "1"))
                 }
+            }
+
+            try {
+                val stream = ChatBus.stream(conversationId)
+                stream.collect { ev ->
+                    when (ev) {
+                        is ChatStreamEvent.Delta ->
+                            send(ServerSentEvent(event = "delta", data = ev.text))
+
+                        is ChatStreamEvent.Done ->
+                            send(ServerSentEvent(event = "done", data = "done"))
+                    }
+                }
+            } finally {
+                pingJob.cancel()
+
             }
         }
     }
