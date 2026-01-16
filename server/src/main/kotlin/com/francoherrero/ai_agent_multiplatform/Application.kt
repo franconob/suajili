@@ -154,29 +154,19 @@ fun Application.module() {
             call.respond(HttpStatusCode.OK)
         }
 
-        route({
-            description = "Chat streaming output via Server-Sent Events"
-            tags = listOf("chat", "sse")
-            response {
-                HttpStatusCode.OK to {
-                    description = "Stream of messages"
-                    body<ServerSentEvent>()
-                }
-            }
-        }) {
-            sse("/chat/stream") {
-                val conversationId = call.request.queryParameters["conversationId"] ?: "default"
 
-                val stream = ChatBus.stream(conversationId)
+        sse("/chat/stream") {
+            val conversationId = call.request.queryParameters["conversationId"] ?: "default"
 
-                stream.collect {
-                    when (it) {
-                        is ChatStreamEvent.Delta ->
-                            send(ServerSentEvent(event = "delta", data = it.text))
+            val stream = ChatBus.stream(conversationId)
 
-                        is ChatStreamEvent.Done ->
-                            send(ServerSentEvent(event = "done", data = "done"))
-                    }
+            stream.collect {
+                when (it) {
+                    is ChatStreamEvent.Delta ->
+                        send(ServerSentEvent(event = "delta", data = it.text))
+
+                    is ChatStreamEvent.Done ->
+                        send(ServerSentEvent(event = "done", data = "done"))
                 }
             }
         }
