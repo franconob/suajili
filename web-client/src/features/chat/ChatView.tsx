@@ -47,16 +47,13 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
     setIsLoading(true);
 
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/chat/${chatId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userMessage),
-        }
-      );
+      await fetch(`${process.env.NEXT_PUBLIC_API}/chat/${chatId}`, {
+        method: "POST",
+        body: JSON.stringify(userMessage),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     } catch (error) {
       console.error("Failed to send message:", error);
     } finally {
@@ -66,14 +63,10 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_SERVER_HOST}:${process.env.NEXT_PUBLIC_SERVER_PORT}/chat/stream?conversationId=${chatId}`,
-      {
-        withCredentials: false,
-      }
+      `${process.env.NEXT_PUBLIC_API}/chat/stream?conversationId=${chatId}`
     );
 
     eventSource.addEventListener("delta", (event) => {
-      console.log("delta", event.data);
       setDeltaList((prev) => [...prev, event.data]);
     });
 

@@ -61,7 +61,8 @@ fun Application.module() {
     install(ContentNegotiation) { json(json) }
     install(SSE)
     install(CORS) {
-        allowHost("localhost", schemes = listOf("http"))
+        allowHost("localhost:3000", schemes = listOf("http"))
+        allowHost("127.0.0.1", schemes = listOf("http"))
         allowHost("suajili.vercel.app", schemes = listOf("https"))
 
         allowMethod(HttpMethod.Options)
@@ -69,6 +70,7 @@ fun Application.module() {
         allowMethod(HttpMethod.Post)
 
         allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
 
         // optional, but often helpful
         allowNonSimpleContentTypes = true
@@ -93,6 +95,7 @@ fun Application.module() {
     }
 
     routing {
+        options { call.respond(HttpStatusCode.OK) }
         staticFiles("/static", File("static"))
 
         route("/api.json") { openApi() }
@@ -158,8 +161,8 @@ fun Application.module() {
 
         sse("/chat/stream") {
             // Helpful headers for proxies
-            call.response.headers.append(HttpHeaders.CacheControl, "no-cache")
-            call.response.headers.append(HttpHeaders.Connection, "keep-alive")
+            //call.response.headers.append(HttpHeaders.CacheControl, "no-cache")
+            //call.response.headers.append(HttpHeaders.Connection, "keep-alive")
 
             val conversationId = call.request.queryParameters["conversationId"] ?: "default"
 
@@ -179,11 +182,16 @@ fun Application.module() {
                 val stream = ChatBus.stream(conversationId)
                 stream.collect { ev ->
                     when (ev) {
-                        is ChatStreamEvent.Delta ->
+                        is ChatStreamEvent.Delta -> {
+                            println("Delta: ${ev.text}")
                             send(ServerSentEvent(event = "delta", data = ev.text))
 
-                        is ChatStreamEvent.Done ->
+                        }
+
+                        is ChatStreamEvent.Done -> {
+                            println("Done")
                             send(ServerSentEvent(event = "done", data = "done"))
+                        }
                     }
                 }
             } finally {
