@@ -1,10 +1,21 @@
 package com.francoherrero.ai_agent_multiplatform
 
+import ai.koog.agents.core.agent.ToolCalls
+import ai.koog.agents.core.tools.reflect.tools
+import ai.koog.ktor.Koog
+import ai.koog.ktor.aiAgent
+import ai.koog.prompt.executor.clients.openai.OpenAIModels
+import ai.koog.prompt.streaming.StreamFrame
+import com.francoherrero.ai_agent_multiplatform.ai.TripsTools
 import com.francoherrero.ai_agent_multiplatform.chat.ChatBus
 import com.francoherrero.ai_agent_multiplatform.chat.ChatStreamEvent
+import com.francoherrero.ai_agent_multiplatform.chat.buildAgentInput
+import com.francoherrero.ai_agent_multiplatform.chat.chunkForStreaming
+import com.francoherrero.ai_agent_multiplatform.model.DeltaPayload
 import com.francoherrero.ai_agent_multiplatform.model.Message
 import com.francoherrero.ai_agent_multiplatform.model.MessageListResponse
 import com.francoherrero.ai_agent_multiplatform.model.Role
+import com.francoherrero.ai_agent_multiplatform.repository.TripsRepository
 import io.github.smiley4.ktoropenapi.OpenApi
 import io.github.smiley4.ktoropenapi.config.ExampleEncoder
 import io.github.smiley4.ktoropenapi.config.SchemaGenerator
@@ -18,39 +29,51 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.http.content.staticFiles
-import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.statuspages.StatusPages
-import io.ktor.server.request.receive
+import io.ktor.server.request.receiveText
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sse.SSE
 import io.ktor.server.sse.sse
 import io.ktor.sse.ServerSentEvent
-import io.ktor.sse.ServerSentEventMetadata
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
 import kotlin.collections.emptyList
+import kotlin.uuid.ExperimentalUuidApi
+
+fun StreamFrame.asTextOrNull(): String? =
+    when (this) {
+        is StreamFrame.Append -> this.text
+        else -> null
+    }
 
 var history: MutableMap<String, MutableList<Message>> = mutableMapOf()
 
-fun main() {
-    embeddedServer(
-        Netty,
-        port = SERVER_PORT,
-        host = "0.0.0.0",
-        module = Application::module,
-        watchPaths = listOf("classes")
-    )
-        .start(wait = true)
+fun main(args: Array<String>) {
+    io.ktor.server.netty.EngineMain.main(args)
 }
 
+private fun Application.loadViajesJsonText(): String {
+    val cfg = environment.config
+    val overridePath = cfg.propertyOrNull("suajili.viajesJsonPath")?.getString()
+    val classpathName = cfg.property("suajili.viajesJsonClasspath").getString()
+
+    return if (!overridePath.isNullOrBlank()) {
+        File(overridePath).readText(Charsets.UTF_8)
+    } else {
+        val isr = this::class.java.classLoader.getResourceAsStream(classpathName)
+            ?: error("Could not find $classpathName in resources (src/main/resources)")
+        isr.bufferedReader(Charsets.UTF_8).use { it.readText() }
+    }
+}
+
+@OptIn(ExperimentalUuidApi::class)
 fun Application.module() {
     val json = Json {
         prettyPrint = true
@@ -94,6 +117,14 @@ fun Application.module() {
         }
     }
 
+    install(Koog) {
+        agentConfig {
+            registerTools {
+                tools(TripsTools(TripsRepository(loadViajesJsonText())))
+            }
+        }
+    }
+
     routing {
         options { call.respond(HttpStatusCode.OK) }
         staticFiles("/static", File("static"))
@@ -114,12 +145,11 @@ fun Application.module() {
             }
         }) {
             val conversationId = call.parameters["conversationId"]
-
             call.respond(
                 MessageListResponse(
                     messages = history.getOrDefault(
                         conversationId,
-                        emptyList<Message>()
+                        emptyList()
                     )
                 )
             )
@@ -128,12 +158,16 @@ fun Application.module() {
         post("/chat/{conversationId}", {
             description = "Append a user message"
             tags = listOf("chat")
-            request {}
+            request {
+                body<String> {
+                    required = true
+                }
+            }
             response {
-                HttpStatusCode.OK to { description = "Accepted" }
+                HttpStatusCode.Created to { description = "Created" }
             }
         }) {
-            val message = call.receive<Message>()
+            val message = call.receiveText()
             val conversationId = call.parameters["conversationId"] ?: ""
 
             if (conversationId.isEmpty()) {
@@ -141,28 +175,49 @@ fun Application.module() {
                 return@post
             }
 
+            val userMessage = Message(role = Role.USER, content = message)
             history[conversationId] = history.getOrPut(conversationId, { mutableListOf() })
-            history[conversationId]?.add(message)
-
-            val chunks = listOf("Hola", " 👋", " esto", " es", " una", " respuesta", " simulada.")
+            history[conversationId]?.add(userMessage)
 
             call.application.launch {
-                for (chunk in chunks) {
-                    ChatBus.emit(ChatStreamEvent.Delta(conversationId, chunk))
-                    delay(70)
-                }
+                try {
+                    val conversation = history[conversationId].orEmpty()
+                    val input = buildAgentInput(conversation)
 
-                ChatBus.emit(ChatStreamEvent.Done(conversationId))
+                    val answer = this@post.aiAgent(
+                        input = input,
+                        model = OpenAIModels.Chat.GPT4_1,
+                        runMode = ToolCalls.SINGLE_RUN_SEQUENTIAL // default; explicit is fine
+                    )
+
+                    // Emit as "stream" (chunking)
+                    chunkForStreaming(answer).forEach { chunk ->
+                        ChatBus.emit(ChatStreamEvent.Frame(conversationId, StreamFrame.Append(chunk)))
+                        delay(25)
+                    }
+
+                    // Persist assistant response
+                    val message = Message(role = Role.ASSISTANT, content = answer)
+                    history[conversationId]?.add(message)
+
+                    ChatBus.emit(ChatStreamEvent.Frame(conversationId, StreamFrame.End()))
+                } catch (t: Throwable) {
+                    t.printStackTrace()
+                    ChatBus.emit(
+                        ChatStreamEvent.Frame(
+                            conversationId,
+                            StreamFrame.Append("\n\n❌ Error: ${t.message ?: "unknown"}")
+                        )
+                    )
+                    ChatBus.emit(ChatStreamEvent.Frame(conversationId, StreamFrame.End()))
+                }
             }
 
-            call.respond(HttpStatusCode.OK)
+            call.respond<Message>(userMessage)
         }
-
 
         sse("/chat/stream") {
             // Helpful headers for proxies
-            //call.response.headers.append(HttpHeaders.CacheControl, "no-cache")
-            //call.response.headers.append(HttpHeaders.Connection, "keep-alive")
 
             val conversationId = call.request.queryParameters["conversationId"] ?: "default"
 
@@ -182,21 +237,38 @@ fun Application.module() {
                 val stream = ChatBus.stream(conversationId)
                 stream.collect { ev ->
                     when (ev) {
-                        is ChatStreamEvent.Delta -> {
-                            println("Delta: ${ev.text}")
-                            send(ServerSentEvent(event = "delta", data = ev.text))
+                        is ChatStreamEvent.Frame -> {
+                            val frame = ev.frame
+                            println("Frame: $frame")
 
-                        }
+                            // 1) Text deltas
+                            frame.asTextOrNull()?.let { text ->
+                                val payload = json.encodeToString(DeltaPayload(text))
+                                send(ServerSentEvent(event = "delta", data = payload))
+                            }
 
-                        is ChatStreamEvent.Done -> {
-                            println("Done")
-                            send(ServerSentEvent(event = "done", data = "done"))
+                            // 2) Completion
+                            if (frame is StreamFrame.End) {
+                                send(ServerSentEvent(event = "done", data = "done"))
+                            }
+
+                            // 3) Optional: tool calls
+                            if (frame is StreamFrame.ToolCall) {
+                                send(
+                                    ServerSentEvent(
+                                        event = "tool",
+                                        data = "${frame.name}:${frame.content}"
+                                    )
+                                )
+                            }
                         }
                     }
                 }
-            } finally {
+            } catch (e: Throwable) {
+                throw e
+            }
+            finally {
                 pingJob.cancel()
-
             }
         }
     }

@@ -1,19 +1,16 @@
 package com.francoherrero.ai_agent_multiplatform.chat
 
+import ai.koog.prompt.streaming.StreamFrame
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-data class ChatDelta(val conversationId: String, val text: String)
-data class ChatDone(val conversationId: String)
-
 sealed interface ChatStreamEvent {
     val conversationId: String
 
-    data class Delta(override val conversationId: String, val text: String) : ChatStreamEvent
-    data class Done(override val conversationId: String) : ChatStreamEvent
+    data class Frame(override val conversationId: String, val frame: StreamFrame) : ChatStreamEvent
 }
 
 object ChatBus {
@@ -35,4 +32,26 @@ object ChatBus {
 
         mutable.tryEmit(event)
     }
+}
+
+fun chunkForStreaming(text: String, max: Int = 180): List<String> {
+    val chunks = mutableListOf<String>()
+    var remaining = text
+
+    while (remaining.length > max) {
+        val window = remaining.take(max)
+
+        val splitIndex =
+            window.lastIndexOf('\n').takeIf { it > 0 }
+                ?: window.lastIndexOf(". ").takeIf { it > 0 }
+                ?: window.lastIndexOf(", ").takeIf { it > 0 }
+                ?: window.lastIndexOf(' ').takeIf { it > 0 }
+                ?: max
+
+        chunks += remaining.take(splitIndex + 1)
+        remaining = remaining.drop(splitIndex + 1)
+    }
+
+    if (remaining.isNotBlank()) chunks += remaining
+    return chunks
 }

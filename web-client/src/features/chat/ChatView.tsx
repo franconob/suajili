@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { ChatSidebar } from "./ChatSidebar";
 import { ChatHeader } from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
@@ -13,49 +13,80 @@ interface ChatViewProps {
 }
 
 export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
-  const onDone = useEffectEvent(() => {
-    console.log("onDone", deltaList.join(""));
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        content: deltaList.join(""),
-        role: "SYSTEM",
-        timestamp: new Date().toISOString(),
-      },
-    ]);
-  });
-
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [deltaList, setDeltaList] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const [streamingId, setStreamingId] = useState<string | null>(null);
+  const streamingIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    streamingIdRef.current = streamingId;
+  }, [streamingId]);
+
+  const onDone = useEffectEvent(() => {
+    setStreamingId(null);
+    streamingIdRef.current = null;
+  });
+
   const handleSubmit = async () => {
     if (!inputValue.trim() || isLoading) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
+    const nowIso = new Date().toISOString();
+
+    const placeholderUserId = `${Date.now()}-user-placeholder`;
+
+    const optimisticUser: Message = {
+      id: placeholderUserId,
       content: inputValue.trim(),
       role: "USER",
       timestamp: new Date().toISOString(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const assistantId = `${Date.now()}-assistant`;
+
+    setMessages((prev) => [
+      ...prev,
+      optimisticUser,
+      {
+        id: assistantId,
+        content: "",
+        role: "ASSISTANT",
+        timestamp: nowIso,
+      },
+    ]);
+
+    setStreamingId(assistantId);
+    streamingIdRef.current = assistantId;
+
     setInputValue("");
     setIsLoading(true);
 
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/chat/${chatId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/chat/${chatId}`, {
         method: "POST",
-        body: JSON.stringify(userMessage),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: inputValue.trim(),
       });
+
+      const savedUser: Message = await response.json();
+
+      setMessages((prev) =>
+        prev.map((m) => (m.id === placeholderUserId ? savedUser : m))
+      );
+
     } catch (error) {
       console.error("Failed to send message:", error);
+      // Optional: write error into the streaming bubble
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === streamingIdRef.current
+            ? { ...m, content: m.content + "\n\n❌ Error enviando el mensaje." }
+            : m
+        )
+      );
+      setStreamingId(null);
+      streamingIdRef.current = null;
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +98,17 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
     );
 
     eventSource.addEventListener("delta", (event) => {
-      setDeltaList((prev) => [...prev, event.data]);
+      const chunk = (event as MessageEvent).data ?? "";
+      const sid = streamingIdRef.current;
+      if (!sid) return;
+
+      const data: { delta: string } = JSON.parse(chunk) ?? { delta: "" };
+
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === sid ? { ...m, content: m.content + data.delta } : m
+        )
+      );
     });
 
     eventSource.addEventListener("done", onDone);

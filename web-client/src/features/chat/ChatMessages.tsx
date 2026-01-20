@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { SparkleIcon } from "./icons";
 import type { Message } from "./types";
+import { ChatMarkdown } from "./ChatMarkdown";
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -49,9 +50,8 @@ export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
             style={{ animationDelay: `${index * 0.05}s` }}
           >
             <div
-              className={`flex gap-4 ${
-                message.role === "USER" ? "justify-end" : "justify-start"
-              }`}
+              className={`flex gap-4 ${message.role === "USER" ? "justify-end" : "justify-start"
+                }`}
             >
               {message.role === "SYSTEM" && (
                 <div className="w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center flex-shrink-0">
@@ -59,15 +59,14 @@ export function ChatMessages({ messages, isLoading }: ChatMessagesProps) {
                 </div>
               )}
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.role === "USER"
-                    ? "bg-[var(--accent)] text-white"
-                    : "bg-[var(--message-assistant-bg)] border border-[var(--border-color)]"
-                }`}
+                className={`max-w-[80%] rounded-2xl px-4 py-3 ${message.role === "USER"
+                  ? "bg-[var(--accent)] text-white"
+                  : "bg-[var(--message-assistant-bg)] border border-[var(--border-color)]"
+                  }`}
               >
-                <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                  {message.content}
-                </p>
+                <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                  <ChatMarkdown content={message.content + (isLoading ? " ▍" : "")} />
+                </div>
               </div>
               {message.role === "USER" && (
                 <div className="w-8 h-8 rounded-full bg-[var(--message-user-bg)] border border-[var(--border-color)] flex items-center justify-center flex-shrink-0 text-sm font-medium">

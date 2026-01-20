@@ -41,6 +41,7 @@ ktor-plugin-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
 ktor-plugin-openapi = { module = "io.github.smiley4:ktor-openapi", version = "5.4.0"}
 ktor-plugin-swagger= { module = "io.github.smiley4:ktor-swagger-ui", version = "5.4.0"}
 ktor-plugin-statuspage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktor-plugin-koog = { module = "ai.koog:koog-ktor", version = "0.6.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

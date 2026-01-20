@@ -33,6 +33,7 @@ dependencies {
     implementation("io.github.smiley4:schema-kenerator-reflection:2.5.0")
     implementation("io.github.smiley4:schema-kenerator-serialization:2.5.0")
     implementation("io.github.smiley4:schema-kenerator-swagger:2.5.0")
+    implementation(libs.ktor.plugin.koog)
     testImplementation(libs.ktor.serverTestHost)
     testImplementation(libs.kotlin.testJunit)
 }
