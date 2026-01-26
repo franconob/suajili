@@ -1,0 +1,593 @@
+[
+  {
+    "id": "910-dragones-de-asia",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/910/dragones-de-asia",
+    "title": "DRAGONES DE ASIA",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/683ef1b94c785.jpg",
+    "durationDays": 22,
+    "route": [
+      "Hanoi",
+      "Halong",
+      "Hue",
+      "Da Nang",
+      "Hoi An",
+      "Ho Chi Minh",
+      "Siem Reap",
+      "Bangkok",
+      "Phi Phi",
+      "Phuket"
+    ],
+    "nextDepartureIso": "2026-01-24",
+    "departureDatesIso": [
+      "2026-01-24"
+    ],
+    "nights": {
+      "hotel": 17,
+      "cruise": 1,
+      "total": 18
+    },
+    "mealsIncluded": {
+      "total": 13,
+      "lunch": 8,
+      "dinner": 5
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 7861,
+      "singleSupplement": 1844,
+      "taxesApprox": 1492,
+      "raw": "Desde U$S 7861 por persona en doble.\nSuplemento en single U$S 1844 / Imp por persona en doble/single U$S 1492 aprox"
+    },
+    "includes": [
+      "Aéreo internacional Turkish Airlines (Buenos Aires–Estambul–Hanoi // Phuket–Estambul–Buenos Aires)",
+      "Vuelos domésticos Vietnam (Hanoi/Hue, Danang/Ho Chi Minh)",
+      "Vuelos internacionales Ho Chi Minh/Siem Reap/Bangkok",
+      "Bangkok/Phuket + lancha Phuket/Phi Phi/Phuket",
+      "17 noches hotel con desayuno + 1 noche crucero Halong (almuerzo/cena)",
+      "13 comidas incluidas",
+      "Guías locales en español + entradas + propinas",
+      "Seguro Universal Assistance + tour leader desde Argentina (mín 10 pax)"
+    ],
+    "notIncluded": [
+      "Bebidas en comidas",
+      "Comidas/bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y opcionales"
+    ],
+    "requirements": [
+      "Pasaporte con vencimiento mayor a 6 meses al regreso",
+      "Vacuna fiebre amarilla (obligatoria)",
+      "Visa Vietnam (online) y Camboya (on arrival)"
+    ],
+    "embeddingText": "Dragones de Asia (22 días). Ruta: Hanoi, Halong, Hue, Hoi An, Ho Chi Minh, Siem Reap, Bangkok, Phi Phi, Phuket. Próxima salida 24/01/2026. Incluye aéreo internacional Turkish + vuelos internos e internacionales en Asia, hoteles con desayuno, crucero Halong, 13 comidas, guías en español, entradas, propinas, seguro y tour leader desde Argentina. Precio desde USD 7861 + imp aprox USD 1492. Requiere vacuna fiebre amarilla + visas Vietnam/Camboya."
+  },
+  {
+    "id": "911-fiordos-y-capitales-nordicas",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/911/fiordos-y-capitales-nordicas",
+    "title": "FIORDOS Y CAPITALES NÓRDICAS",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/a1b2c3d4e5f6.jpg",
+    "durationDays": 15,
+    "route": [
+      "Copenhague",
+      "Oslo",
+      "Fiordo de Geiranger",
+      "Bergen",
+      "Flåm",
+      "Estocolmo"
+    ],
+    "nextDepartureIso": "2026-06-07",
+    "departureDatesIso": [
+      "2026-06-07"
+    ],
+    "nights": {
+      "hotel": 10,
+      "cruise": 1,
+      "total": 11
+    },
+    "mealsIncluded": {
+      "total": 9,
+      "lunch": 5,
+      "dinner": 4
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 6420,
+      "singleSupplement": 1290,
+      "taxesApprox": 980,
+      "raw": "Desde U$S 6420 por persona en doble.\nSuplemento en single U$S 1290 / Imp por persona en doble/single U$S 980 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con KLM / Air France desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "10 noches de alojamiento con desayuno (o similar)",
+      "9 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Crucero por fiordo (1 noche a bordo)"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Seguro de viaje recomendado",
+      "Requiere autorización/visa según nacionalidad (Schengen)"
+    ],
+    "embeddingText": "Fiordos Y Capitales Nórdicas (15 días). Ruta: Copenhague, Oslo, Fiordo de Geiranger, Bergen, Flåm, Estocolmo. Próxima salida 07/06/2026. Incluye aéreo internacional KLM / Air France, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 6420 + imp aprox USD 980. Requisitos: Pasaporte vigente 6+ meses + Seguro de viaje recomendado + Requiere autorización/visa según nacionalidad (Schengen)."
+  },
+  {
+    "id": "912-safari-y-zanzibar",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/912/safari-y-zanzibar",
+    "title": "SAFARI EN TANZANIA + ZANZÍBAR",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/b7c8d9e0f1a2.jpg",
+    "durationDays": 12,
+    "route": [
+      "Arusha",
+      "Tarangire",
+      "Serengeti",
+      "Ngorongoro",
+      "Zanzíbar (Nungwi)"
+    ],
+    "nextDepartureIso": "2026-08-15",
+    "departureDatesIso": [
+      "2026-08-15"
+    ],
+    "nights": {
+      "hotel": 7,
+      "total": 7
+    },
+    "mealsIncluded": {
+      "total": 7,
+      "lunch": 4,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 5980,
+      "singleSupplement": 1120,
+      "taxesApprox": 860,
+      "raw": "Desde U$S 5980 por persona en doble.\nSuplemento en single U$S 1120 / Imp por persona en doble/single U$S 860 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Ethiopian Airlines desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "7 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Jeep 4x4 en safari con guía experto",
+      "2 noches en lodge dentro de parque"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Vacuna fiebre amarilla (según ruta)",
+      "Visa Tanzania (on arrival/online)"
+    ],
+    "embeddingText": "Safari En Tanzania + Zanzíbar (12 días). Ruta: Arusha, Tarangire, Serengeti, Ngorongoro, Zanzíbar (Nungwi). Próxima salida 15/08/2026. Incluye aéreo internacional Ethiopian Airlines, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 5980 + imp aprox USD 860. Requisitos: Pasaporte vigente 6+ meses + Vacuna fiebre amarilla (según ruta) + Visa Tanzania (on arrival/online)."
+  },
+  {
+    "id": "913-japon-en-otono",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/913/japon-en-otono",
+    "title": "JAPÓN EN OTOÑO",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/c3d4e5f6a7b8.jpg",
+    "durationDays": 14,
+    "route": [
+      "Tokio",
+      "Nikkō",
+      "Hakone",
+      "Kioto",
+      "Nara",
+      "Hiroshima",
+      "Miyajima",
+      "Osaka"
+    ],
+    "nextDepartureIso": "2026-10-10",
+    "departureDatesIso": [
+      "2026-10-10"
+    ],
+    "nights": {
+      "hotel": 9,
+      "total": 9
+    },
+    "mealsIncluded": {
+      "total": 8,
+      "lunch": 5,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 7290,
+      "singleSupplement": 1680,
+      "taxesApprox": 1150,
+      "raw": "Desde U$S 7290 por persona en doble.\nSuplemento en single U$S 1680 / Imp por persona en doble/single U$S 1150 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Qatar Airways desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "9 noches de alojamiento con desayuno (o similar)",
+      "8 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Japan Rail Pass (segmentos incluidos)",
+      "Experiencia onsen en Hakone"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Seguro médico obligatorio/recomendado",
+      "Requisitos de ingreso pueden variar"
+    ],
+    "embeddingText": "Japón En Otoño (14 días). Ruta: Tokio, Nikkō, Hakone, Kioto, Nara, Hiroshima, Miyajima, Osaka. Próxima salida 10/10/2026. Incluye aéreo internacional Qatar Airways, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 7290 + imp aprox USD 1150. Requisitos: Pasaporte vigente 6+ meses + Seguro médico obligatorio/recomendado + Requisitos de ingreso pueden variar."
+  },
+  {
+    "id": "914-patagonia-epica",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/914/patagonia-epica",
+    "title": "PATAGONIA ÉPICA",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/d9e0f1a2b3c4.jpg",
+    "durationDays": 10,
+    "route": [
+      "El Calafate",
+      "Glaciar Perito Moreno",
+      "El Chaltén",
+      "Ushuaia",
+      "Parque Nacional Tierra del Fuego"
+    ],
+    "nextDepartureIso": "2026-03-21",
+    "departureDatesIso": [
+      "2026-03-21"
+    ],
+    "nights": {
+      "hotel": 7,
+      "total": 7
+    },
+    "mealsIncluded": {
+      "total": 6,
+      "lunch": 3,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 2890,
+      "singleSupplement": 740,
+      "taxesApprox": 320,
+      "raw": "Desde U$S 2890 por persona en doble.\nSuplemento en single U$S 740 / Imp por persona en doble/single U$S 320 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Aerolíneas Argentinas (domésticos) desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "6 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Excursión al Glaciar Perito Moreno",
+      "Navegación canal Beagle"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "DNI o pasaporte (según tramos)",
+      "Ropa de abrigo/impermeable recomendada"
+    ],
+    "embeddingText": "Patagonia Épica (10 días). Ruta: El Calafate, Glaciar Perito Moreno, El Chaltén, Ushuaia, Parque Nacional Tierra del Fuego. Próxima salida 21/03/2026. Incluye aéreo internacional Aerolíneas Argentinas (domésticos), traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 2890 + imp aprox USD 320. Requisitos: DNI o pasaporte (según tramos) + Ropa de abrigo/impermeable recomendada."
+  },
+  {
+    "id": "915-marruecos-y-andalucia",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/915/marruecos-y-andalucia",
+    "title": "MARRUECOS + ANDALUCÍA",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/e5f6a7b8c9d0.jpg",
+    "durationDays": 13,
+    "route": [
+      "Madrid",
+      "Sevilla",
+      "Córdoba",
+      "Granada",
+      "Tánger",
+      "Chefchaouen",
+      "Fez",
+      "Marrakech"
+    ],
+    "nextDepartureIso": "2026-04-12",
+    "departureDatesIso": [
+      "2026-04-12"
+    ],
+    "nights": {
+      "hotel": 8,
+      "total": 8
+    },
+    "mealsIncluded": {
+      "total": 7,
+      "lunch": 4,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 4680,
+      "singleSupplement": 990,
+      "taxesApprox": 720,
+      "raw": "Desde U$S 4680 por persona en doble.\nSuplemento en single U$S 990 / Imp por persona en doble/single U$S 720 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Iberia desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "8 noches de alojamiento con desayuno (o similar)",
+      "7 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Tren de alta velocidad en España (1 tramo)",
+      "Noche en riad en Marrakech"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Visa Marruecos según nacionalidad"
+    ],
+    "embeddingText": "Marruecos + Andalucía (13 días). Ruta: Madrid, Sevilla, Córdoba, Granada, Tánger, Chefchaouen, Fez, Marrakech. Próxima salida 12/04/2026. Incluye aéreo internacional Iberia, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 4680 + imp aprox USD 720. Requisitos: Pasaporte vigente 6+ meses + Visa Marruecos según nacionalidad."
+  },
+  {
+    "id": "916-peru-mistico",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/916/peru-mistico",
+    "title": "PERÚ MÍSTICO",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/f1a2b3c4d5e6.jpg",
+    "durationDays": 9,
+    "route": [
+      "Lima",
+      "Cusco",
+      "Valle Sagrado",
+      "Machu Picchu",
+      "Puno",
+      "Lago Titicaca"
+    ],
+    "nextDepartureIso": "2026-05-02",
+    "departureDatesIso": [
+      "2026-05-02"
+    ],
+    "nights": {
+      "hotel": 7,
+      "total": 7
+    },
+    "mealsIncluded": {
+      "total": 6,
+      "lunch": 3,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 2450,
+      "singleSupplement": 620,
+      "taxesApprox": 290,
+      "raw": "Desde U$S 2450 por persona en doble.\nSuplemento en single U$S 620 / Imp por persona en doble/single U$S 290 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con LATAM (regional) desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "6 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Tren a Machu Picchu (categoría turística)",
+      "Almuerzo pachamanca (experiencia)"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Vacuna fiebre amarilla recomendada (selva)",
+      "Altura: consulta médica si corresponde"
+    ],
+    "embeddingText": "Perú Místico (9 días). Ruta: Lima, Cusco, Valle Sagrado, Machu Picchu, Puno, Lago Titicaca. Próxima salida 02/05/2026. Incluye aéreo internacional LATAM (regional), traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 2450 + imp aprox USD 290. Requisitos: Pasaporte vigente 6+ meses + Vacuna fiebre amarilla recomendada (selva) + Altura: consulta médica si corresponde."
+  },
+  {
+    "id": "917-egipto-y-nilo",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/917/egipto-y-nilo",
+    "title": "EGIPTO Y CRUCERO POR EL NILO",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/0a1b2c3d4e5f.jpg",
+    "durationDays": 11,
+    "route": [
+      "El Cairo",
+      "Giza",
+      "Luxor",
+      "Edfu",
+      "Kom Ombo",
+      "Asuán"
+    ],
+    "nextDepartureIso": "2026-11-03",
+    "departureDatesIso": [
+      "2026-11-03"
+    ],
+    "nights": {
+      "hotel": 7,
+      "cruise": 1,
+      "total": 8
+    },
+    "mealsIncluded": {
+      "total": 6,
+      "lunch": 3,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 5190,
+      "singleSupplement": 1080,
+      "taxesApprox": 840,
+      "raw": "Desde U$S 5190 por persona en doble.\nSuplemento en single U$S 1080 / Imp por persona en doble/single U$S 840 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Turkish Airlines desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "6 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Crucero por el Nilo (3 noches) con pensión completa"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Visa Egipto (on arrival/online)",
+      "Seguro médico recomendado"
+    ],
+    "embeddingText": "Egipto Y Crucero Por El Nilo (11 días). Ruta: El Cairo, Giza, Luxor, Edfu, Kom Ombo, Asuán. Próxima salida 03/11/2026. Incluye aéreo internacional Turkish Airlines, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 5190 + imp aprox USD 840. Requisitos: Pasaporte vigente 6+ meses + Visa Egipto (on arrival/online) + Seguro médico recomendado."
+  },
+  {
+    "id": "918-islandia-y-auroras",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/918/islandia-y-auroras",
+    "title": "ISLANDIA Y AURORAS BOREALES",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/1f2e3d4c5b6a.jpg",
+    "durationDays": 8,
+    "route": [
+      "Reikiavik",
+      "Círculo Dorado",
+      "Vík",
+      "Jökulsárlón",
+      "Blue Lagoon"
+    ],
+    "nextDepartureIso": "2027-02-05",
+    "departureDatesIso": [
+      "2027-02-05"
+    ],
+    "nights": {
+      "hotel": 7,
+      "total": 7
+    },
+    "mealsIncluded": {
+      "total": 6,
+      "lunch": 3,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 4120,
+      "singleSupplement": 980,
+      "taxesApprox": 650,
+      "raw": "Desde U$S 4120 por persona en doble.\nSuplemento en single U$S 980 / Imp por persona en doble/single U$S 650 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Icelandair (con conexiones) desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "6 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Caza de auroras (2 salidas)",
+      "Baño termal Blue Lagoon"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Seguro de viaje recomendado",
+      "Clima extremo: equipamiento obligatorio"
+    ],
+    "embeddingText": "Islandia Y Auroras Boreales (8 días). Ruta: Reikiavik, Círculo Dorado, Vík, Jökulsárlón, Blue Lagoon. Próxima salida 05/02/2027. Incluye aéreo internacional Icelandair (con conexiones), traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 4120 + imp aprox USD 650. Requisitos: Pasaporte vigente 6+ meses + Seguro de viaje recomendado + Clima extremo: equipamiento obligatorio."
+  },
+  {
+    "id": "919-mexico-yucatan",
+    "url": "https://www.suajili.com.ar/viajes_en_grupo/viaje/919/mexico-yucatan",
+    "title": "MÉXICO: YUCATÁN Y CARIBE",
+    "imageUrl": "http://www.suajili.com.ar//uploads/imagenes/paquetes/600x360/2a3b4c5d6e7f.jpg",
+    "durationDays": 10,
+    "route": [
+      "Ciudad de México",
+      "Teotihuacán",
+      "Mérida",
+      "Chichén Itzá",
+      "Tulum",
+      "Playa del Carmen"
+    ],
+    "nextDepartureIso": "2026-07-18",
+    "departureDatesIso": [
+      "2026-07-18"
+    ],
+    "nights": {
+      "hotel": 7,
+      "total": 7
+    },
+    "mealsIncluded": {
+      "total": 6,
+      "lunch": 3,
+      "dinner": 3
+    },
+    "price": {
+      "currency": "USD",
+      "basePerPersonDouble": 3380,
+      "singleSupplement": 820,
+      "taxesApprox": 430,
+      "raw": "Desde U$S 3380 por persona en doble.\nSuplemento en single U$S 820 / Imp por persona en doble/single U$S 430 aprox"
+    },
+    "includes": [
+      "Aéreo internacional con Aeroméxico desde Buenos Aires (ida y vuelta)",
+      "Traslados de llegada y salida en cada destino",
+      "7 noches de alojamiento con desayuno (o similar)",
+      "6 comidas incluidas (aprox.)",
+      "Visitas con guía local de habla hispana según itinerario",
+      "Entradas a los lugares de visita según programa",
+      "Seguro de asistencia médica + kit de viaje",
+      "Tour leader acompañante desde Argentina con mínimo 10 pasajeros",
+      "Visita a cenotes en Yucatán",
+      "Clase de cocina mexicana"
+    ],
+    "notIncluded": [
+      "Bebidas en las comidas",
+      "Comidas y bebidas no especificadas",
+      "Servicios no mencionados",
+      "Gastos personales y actividades opcionales"
+    ],
+    "requirements": [
+      "Pasaporte vigente 6+ meses",
+      "Requisitos de ingreso pueden variar"
+    ],
+    "embeddingText": "México: Yucatán Y Caribe (10 días). Ruta: Ciudad de México, Teotihuacán, Mérida, Chichén Itzá, Tulum, Playa del Carmen. Próxima salida 18/07/2026. Incluye aéreo internacional Aeroméxico, traslados, hoteles con desayuno, visitas guiadas en español y seguro. Precio desde USD 3380 + imp aprox USD 430. Requisitos: Pasaporte vigente 6+ meses + Requisitos de ingreso pueden variar."
+  }
+]

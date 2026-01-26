@@ -34,6 +34,18 @@ dependencies {
     implementation("io.github.smiley4:schema-kenerator-serialization:2.5.0")
     implementation("io.github.smiley4:schema-kenerator-swagger:2.5.0")
     implementation(libs.ktor.plugin.koog)
+    implementation(libs.ktor.server.call.logging)
+
+    // Db stuff
+    implementation(libs.postgresql)
+    implementation(libs.hikariCP)
+
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.javaTime)
+
+
     testImplementation(libs.ktor.serverTestHost)
     testImplementation(libs.kotlin.testJunit)
 }

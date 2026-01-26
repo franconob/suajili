@@ -16,9 +16,8 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
-
-# resources
-**/*/viajes.json
+.env
+run-server.sh
 
 # web client
 web-client/.env*

@@ -1,23 +1,24 @@
 "use client";
 
 import { PlusIcon, ChatIcon } from "./icons";
-import { mockChatHistory } from "./types";
+import { useConversations } from "./ConversationsContext";
 
 interface ChatSidebarProps {
-  chatId: string;
+  chatId?: string;
   isOpen: boolean;
+  onNewChat: () => void;
 }
 
-export function ChatSidebar({ chatId, isOpen }: ChatSidebarProps) {
+export function ChatSidebar({ chatId, isOpen, onNewChat }: ChatSidebarProps) {
+  const { conversations } = useConversations();
   return (
     <aside
-      className={`${
-        isOpen ? "w-64" : "w-0"
-      } bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transition-all duration-300 overflow-hidden`}
+      className={`${isOpen ? "w-64" : "w-0"
+        } bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transition-all duration-300 overflow-hidden`}
     >
       {/* New Chat Button */}
       <div className="p-3">
-        <button className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-[var(--border-color)] hover:bg-[var(--message-user-bg)] transition-colors text-sm font-medium">
+        <button onClick={onNewChat} className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg border border-[var(--border-color)] hover:bg-[var(--message-user-bg)] transition-colors text-sm font-medium">
           <PlusIcon />
           New chat
         </button>
@@ -29,16 +30,15 @@ export function ChatSidebar({ chatId, isOpen }: ChatSidebarProps) {
           Recent
         </div>
         <nav className="space-y-1">
-          {mockChatHistory.map((chat) => (
+          {conversations.map((chat) => (
             <a
               key={chat.id}
-              href={`/chat/${chat.id}`}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-[var(--message-user-bg)] transition-colors ${
-                chat.id === chatId ? "bg-[var(--message-user-bg)]" : ""
-              }`}
+              href={`/conversations/${chat.id}`}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-[var(--message-user-bg)] transition-colors ${chat.id === chatId ? "bg-[var(--message-user-bg)]" : ""
+                }`}
             >
               <ChatIcon />
-              <span className="truncate flex-1">{chat.title}</span>
+              <span className="truncate flex-1">{chat.title || "Untitled"}</span>
             </a>
           ))}
         </nav>

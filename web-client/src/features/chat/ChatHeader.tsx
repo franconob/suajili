@@ -1,16 +1,15 @@
 "use client";
 
 import { MenuIcon } from "./icons";
+import { useSidebar } from "./SidebarContext";
 
-interface ChatHeaderProps {
-  onToggleSidebar: () => void;
-}
+export function ChatHeader() {
+  const { toggleSidebar } = useSidebar();
 
-export function ChatHeader({ onToggleSidebar }: ChatHeaderProps) {
   return (
     <header className="h-14 flex items-center px-4 border-b border-[var(--border-color)] bg-[var(--chat-bg)]">
       <button
-        onClick={onToggleSidebar}
+        onClick={toggleSidebar}
         className="p-2 hover:bg-[var(--message-user-bg)] rounded-lg transition-colors"
       >
         <MenuIcon />

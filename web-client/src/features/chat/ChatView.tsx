@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useEffectEvent, useRef, useState } from "react";
-import { ChatSidebar } from "./ChatSidebar";
 import { ChatHeader } from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
-import type { Message } from "./types";
+import type { Message } from "@/src/lib/api";
 
 interface ChatViewProps {
   chatId: string;
@@ -16,7 +15,6 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [streamingId, setStreamingId] = useState<string | null>(null);
   const streamingIdRef = useRef<string | null>(null);
@@ -33,27 +31,38 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
   const handleSubmit = async () => {
     if (!inputValue.trim() || isLoading) return;
 
-    const nowIso = new Date().toISOString();
+    const content = inputValue.trim();
 
-    const placeholderUserId = `${Date.now()}-user-placeholder`;
+    // stable client id to reconcile optimistic -> server
+    const clientMessageId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+    const placeholderUserId = `client:${clientMessageId}`;
 
     const optimisticUser: Message = {
       id: placeholderUserId,
-      content: inputValue.trim(),
+      conversationId: chatId,
       role: "USER",
-      timestamp: new Date().toISOString(),
+      content,
+      clientMessageId,
+      status: "sent",
+      createdAt: new Date().toISOString(),
     };
 
-    const assistantId = `${Date.now()}-assistant`;
+    const assistantId = `assistant:${Date.now()}`;
 
     setMessages((prev) => [
       ...prev,
       optimisticUser,
       {
         id: assistantId,
-        content: "",
+        conversationId: chatId,
         role: "ASSISTANT",
-        timestamp: nowIso,
+        content: "",
+        status: "streaming",
+        createdAt: new Date().toISOString(),
       },
     ]);
 
@@ -64,27 +73,43 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/chat/${chatId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/conversations/${chatId}/messages`, {
         method: "POST",
-        body: inputValue.trim(),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content, clientMessageId }),
       });
 
-      const savedUser: Message = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
 
+      const savedUser: Message = (await response.json());
+      console.log({ savedUser })
+
+      // Replace optimistic user message by matching clientMessageId (most reliable)
       setMessages((prev) =>
-        prev.map((m) => (m.id === placeholderUserId ? savedUser : m))
+        prev.map((m) =>
+          m.clientMessageId && savedUser.clientMessageId && m.clientMessageId === savedUser.clientMessageId
+            ? savedUser
+            : m.id === placeholderUserId
+              ? savedUser
+              : m
+        )
       );
-
     } catch (error) {
       console.error("Failed to send message:", error);
-      // Optional: write error into the streaming bubble
+
+      // Write error into the assistant bubble
       setMessages((prev) =>
         prev.map((m) =>
           m.id === streamingIdRef.current
-            ? { ...m, content: m.content + "\n\n❌ Error enviando el mensaje." }
+            ? { ...m, content: m.content + "\n\n❌ Error enviando el mensaje.", status: "failed" }
             : m
         )
       );
+
       setStreamingId(null);
       streamingIdRef.current = null;
     } finally {
@@ -94,15 +119,15 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
 
   useEffect(() => {
     const eventSource = new EventSource(
-      `${process.env.NEXT_PUBLIC_API}/chat/stream?conversationId=${chatId}`
+      `${process.env.NEXT_PUBLIC_API}/conversations/${chatId}/stream`
     );
 
     eventSource.addEventListener("delta", (event) => {
-      const chunk = (event as MessageEvent).data ?? "";
       const sid = streamingIdRef.current;
       if (!sid) return;
 
-      const data: { delta: string } = JSON.parse(chunk) ?? { delta: "" };
+      const raw = (event as MessageEvent).data ?? "";
+      const data: { delta: string } = JSON.parse(raw) ?? { delta: "" };
 
       setMessages((prev) =>
         prev.map((m) =>
@@ -111,7 +136,16 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
       );
     });
 
-    eventSource.addEventListener("done", onDone);
+    eventSource.addEventListener("done", () => {
+      // mark assistant status done (optional)
+      const sid = streamingIdRef.current;
+      if (sid) {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === sid ? { ...m, status: "done" } : m))
+        );
+      }
+      onDone();
+    });
 
     return () => {
       eventSource.close();
@@ -119,21 +153,17 @@ export function ChatView({ chatId, initialMessages = [] }: ChatViewProps) {
   }, [chatId]);
 
   return (
-    <div className="flex h-screen bg-[var(--background)]">
-      <ChatSidebar chatId={chatId} isOpen={sidebarOpen} />
+    <main className="flex-1 flex flex-col min-w-0">
+      <ChatHeader />
 
-      <main className="flex-1 flex flex-col min-w-0">
-        <ChatHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <ChatMessages messages={messages} isLoading={isLoading} />
 
-        <ChatMessages messages={messages} isLoading={isLoading} />
-
-        <ChatInput
-          value={inputValue}
-          onChange={setInputValue}
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
-      </main>
-    </div>
+      <ChatInput
+        value={inputValue}
+        onChange={setInputValue}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
+      />
+    </main>
   );
 }

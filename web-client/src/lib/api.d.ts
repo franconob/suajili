@@ -29,7 +29,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/io.ktor.server.http.content.TailcardSelector@4f668f29/static/{...}": {
+    "/io.ktor.server.http.content.TailcardSelector@68dd39d2/static/{...}": {
         parameters: {
             query?: never;
             header?: never;
@@ -79,14 +79,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/messages/{conversationId}": {
+    "/conversations": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description Get message history */
+        /** @description Get a list of conversations */
         get: {
             parameters: {
                 query?: never;
@@ -96,33 +96,75 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Message list */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.MessageListResponse"];
+                        "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.ConversationDto"][];
                     };
                 };
             };
         };
         put?: never;
-        post?: never;
+        /** @description Create a new conversation */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.CreateConversationRequest"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.CreateConversationResponse"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/chat/{conversationId}": {
+    "/conversations/{conversationId}/messages": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** @description Get a list of conversation messages */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.MessageDto"][];
+                    };
+                };
+            };
+        };
         put?: never;
         /** @description Append a user message */
         post: {
@@ -134,16 +176,17 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": string;
+                    "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.CreateMessageRequest"];
                 };
             };
             responses: {
-                /** @description Created */
                 201: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.MessageDto"];
+                    };
                 };
             };
         };
@@ -153,7 +196,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/chat/stream": {
+    "/conversations/{conversationId}/chat/stream": {
         parameters: {
             query?: never;
             header?: never;
@@ -182,25 +225,49 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** Message */
-        "com.francoherrero.ai_agent_multiplatform.model.Message": {
+        /** ConversationDto */
+        "com.francoherrero.ai_agent_multiplatform.model.ConversationDto": {
             /** String */
             id: string;
             /** String */
-            timestamp: string;
+            title?: null | string;
+            /** String */
+            createdAt: string;
+            /** String */
+            updatedAt: string;
+        };
+        /** CreateConversationRequest */
+        "com.francoherrero.ai_agent_multiplatform.model.CreateConversationRequest": {
+            /** String */
+            title?: null | string;
+        };
+        /** CreateConversationResponse */
+        "com.francoherrero.ai_agent_multiplatform.model.CreateConversationResponse": {
+            conversation: components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.ConversationDto"];
+        };
+        /** MessageDto */
+        "com.francoherrero.ai_agent_multiplatform.model.MessageDto": {
+            /** String */
+            id: string;
+            /** String */
+            conversationId: string;
+            /** String */
+            role: string;
             /** String */
             content: string;
-            role: components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Role"];
+            /** String */
+            clientMessageId?: null | string;
+            /** String */
+            status: string;
+            /** String */
+            createdAt: string;
         };
-        /**
-         * Role
-         * @enum {string}
-         */
-        "com.francoherrero.ai_agent_multiplatform.model.Role": "USER" | "SYSTEM" | "ASSISTANT";
-        /** MessageListResponse */
-        "com.francoherrero.ai_agent_multiplatform.model.MessageListResponse": {
-            /** ArrayList<Message> */
-            messages: components["schemas"]["com.francoherrero.ai_agent_multiplatform.model.Message"][];
+        /** CreateMessageRequest */
+        "com.francoherrero.ai_agent_multiplatform.model.CreateMessageRequest": {
+            /** String */
+            content: string;
+            /** String */
+            clientMessageId?: null | string;
         };
     };
     responses: never;
