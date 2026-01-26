@@ -32,6 +32,3 @@ data class CreateMessageRequest(
 
 @Serializable
 data class CreateConversationResponse(val conversation: ConversationDto)
-
-@Serializable
-data class CreateMessageResponse(val message: MessageDto)
