@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { SparkleIcon } from "./icons";
-import type { Message } from "./types";
+import type { Message } from "@/src/lib/api";
 import { ChatMarkdown } from "./ChatMarkdown";
 
 interface ChatMessagesProps {
