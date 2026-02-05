@@ -12,8 +12,6 @@ on:
       - "**/*.gradle.kts"
       - "settings.gradle.kts"
       - "build.gradle.kts"
-      - "web-client/**"
-
 env:
   PROJECT_ID: ultimate-walker-484513-r3
   REGION: southamerica-west1
