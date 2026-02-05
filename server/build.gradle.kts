@@ -5,6 +5,7 @@ import io.ktor.plugin.OpenApiPreview
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlinSerialization)
     application
 }
 
@@ -25,6 +26,14 @@ dependencies {
     implementation(libs.ktor.contentServerNegotiation)
     implementation(libs.ktor.serialization.json)
     implementation(libs.ktor.response.sse)
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation("com.auth0:jwks-rsa:0.22.1")
+
+    // HTTP client for Supabase auth
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.plugin.cors)
     implementation(libs.ktor.plugin.openapi)
     implementation(libs.ktor.plugin.swagger)

@@ -1,44 +1,52 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     iosArm64()
     iosSimulatorArm64()
-    
+
     jvm()
 
-    js {
-        outputModuleName = "shared"
-        browser()
-        binaries.library()
-        generateTypeScriptDefinitions()
-        compilerOptions {
-            target = "es2015"
-        }
-    }
-    
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
             implementation(libs.kotlin.serialization)
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.kmp.datastore)
+            //implementation(project.dependencies.platform(libs.koin.bom))
+            //implementation(libs.koin.core)
         }
 
-        jsMain.dependencies {
-            implementation(libs.ktor.client.js)
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.androidx.security.crypto)
+            implementation(libs.ktor.network.inspector)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.ktor.network.inspector)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.cio)
         }
 
         commonTest.dependencies {

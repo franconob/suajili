@@ -16,16 +16,17 @@ object ChatApi {
     }
 
     suspend fun fetchMessageList(): ApiResult<MessageListResponse> {
-        return try {
-            val rawJson = HttpClient.get("/messages")
-            val response = json.decodeFromString<MessageListResponse>(rawJson)
-            ApiResult.Ok(response)
-        } catch (e: Exception) {
-            ApiResult.Error(
-                message = e.message ?: "Unknown error",
-                code = null
-            )
-        }
+        return ApiResult.Ok(MessageListResponse(emptyList()))
+//        return try {
+//            val rawJson = HttpClient.get("/messages")
+//            val response = json.decodeFromString<MessageListResponse>(rawJson)
+//            ApiResult.Ok(response)
+//        } catch (e: Exception) {
+//            ApiResult.Error(
+//                message = e.message ?: "Unknown error",
+//                code = null
+//            )
+//        }
     }
 
     fun listenSse() {

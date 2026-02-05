@@ -2,6 +2,9 @@ package com.francoherrero.ai_agent_multiplatform.model
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Catalog trip - the template for group trips (from viajes.json or catalog_trips table)
+ */
 @Serializable
 data class Trip(
     val id: String,
@@ -23,6 +26,9 @@ data class Trip(
     val notIncluded: List<String> = emptyList(),
     val requirements: List<String> = emptyList(),
     val embeddingText: String? = null,
+
+    // Scheduled departures (from catalog_trip_departures table)
+    val departures: List<CatalogTripDepartureDto>? = null
 )
 
 @Serializable data class Nights(val hotel: Int? = null, val cruise: Int? = null, val total: Int? = null)

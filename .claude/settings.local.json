@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.suajili.com.ar)",
+      "Bash(./gradlew:*)",
+      "Bash(./run-server.sh:*)"
+    ]
+  }
+}

@@ -4,10 +4,16 @@ import ai.koog.agents.core.tools.reflect.tools
 import ai.koog.ktor.Koog
 import ai.koog.prompt.streaming.StreamFrame
 import com.francoherrero.ai_agent_multiplatform.ai.TripsTools
+import com.francoherrero.ai_agent_multiplatform.auth.SupabaseAuthService
 import com.francoherrero.ai_agent_multiplatform.db.ChatRepository
 import com.francoherrero.ai_agent_multiplatform.db.DatabaseFactory
 import com.francoherrero.ai_agent_multiplatform.repository.TripsRepository
+import com.francoherrero.ai_agent_multiplatform.db.UserTripsRepository
+import com.francoherrero.ai_agent_multiplatform.routes.authRoutes
 import com.francoherrero.ai_agent_multiplatform.routes.chatRoutes
+import com.francoherrero.ai_agent_multiplatform.routes.userRoutes
+import com.auth0.jwk.JwkProviderBuilder
+import java.util.concurrent.TimeUnit
 import io.github.smiley4.ktoropenapi.OpenApi
 import io.github.smiley4.ktoropenapi.config.ExampleEncoder
 import io.github.smiley4.ktoropenapi.config.SchemaGenerator
@@ -21,6 +27,9 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.http.content.staticFiles
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
@@ -68,12 +77,26 @@ fun Application.module() {
 
     DatabaseFactory.init()
     val repo = ChatRepository()
+    val userTripsRepo = UserTripsRepository()
+
+    // Supabase configuration from environment
+    val supabaseUrl = System.getenv("SUPABASE_URL") ?: error("SUPABASE_URL not set")
+    val supabaseAnonKey = System.getenv("SUPABASE_ANON_KEY") ?: error("SUPABASE_ANON_KEY not set")
+
+    val authService = SupabaseAuthService(supabaseUrl, supabaseAnonKey)
+
+    // JWKS provider for ES256 token verification
+    val jwkProvider = JwkProviderBuilder(java.net.URL("$supabaseUrl/auth/v1/.well-known/jwks.json"))
+        .cached(10, 24, TimeUnit.HOURS)
+        .rateLimited(10, 1, TimeUnit.MINUTES)
+        .build()
 
     install(ContentNegotiation) { json(json) }
     install(SSE)
     install(CORS) {
         allowHost("localhost:3000", schemes = listOf("http"))
-        allowHost("127.0.0.1", schemes = listOf("http"))
+        allowHost("10.0.2.2", schemes = listOf("http"))
+        allowHost("localhost", schemes = listOf("http"))
         allowHost("suajili.vercel.app", schemes = listOf("https"))
 
         allowMethod(HttpMethod.Options)
@@ -88,6 +111,26 @@ fun Application.module() {
 
         // If later you use cookies/auth:
         // allowCredentials = true
+    }
+
+    install(Authentication) {
+        jwt("supabase") {
+            verifier(jwkProvider) {
+                withAudience("authenticated")
+                withIssuer("$supabaseUrl/auth/v1")
+            }
+            validate { credential ->
+                val userId = credential.payload.subject
+                if (userId != null) {
+                    JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
+            }
+            challenge { _, _ ->
+                call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "Invalid or expired token"))
+            }
+        }
     }
 
     install(OpenApi) {
@@ -122,6 +165,8 @@ fun Application.module() {
 
         get("/health") { call.respondText("ok") }
 
+        authRoutes(authService)
         chatRoutes(repo)
+        userRoutes(userTripsRepo, TripsRepository(loadViajesJsonText()))
     }
 }
