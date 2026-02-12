@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm build:*)",
+      "Bash(grep:*)",
+      "Bash(./gradlew :server:compileKotlin:*)",
+      "Bash(/Users/fherrero/AndroidStudioProjects/ai-agent-multiplatform/gradlew:*)",
+      "Bash(find:*)"
+    ]
+  }
+}
