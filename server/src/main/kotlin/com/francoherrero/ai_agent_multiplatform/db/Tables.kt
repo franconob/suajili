@@ -2,6 +2,8 @@
 
 package com.francoherrero.ai_agent_multiplatform.db
 
+import org.jetbrains.exposed.v1.core.TextColumnType
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.core.dao.id.java.UUIDTable
 import org.jetbrains.exposed.v1.javatime.date
 import org.jetbrains.exposed.v1.javatime.timestampWithTimeZone
@@ -23,12 +25,22 @@ object Messages : UUIDTable("messages") {
     val createdAt = timestampWithTimeZone("created_at")
 }
 
+object AuthUsers : UUIDTable("\"auth\".\"users\"") {
+    val email = varchar("email", 255)
+    val phone = varchar("phone", 255).nullable()
+}
+
+object UserProfiles : UUIDTable("user_profile") {
+    val userId = reference("user_id", AuthUsers.id)
+    val firstName = varchar("first_name", 255).nullable()
+    val lastName = varchar("last_name", 255).nullable()
+}
+
 // ============================================
 // CATALOG TABLES
 // ============================================
 
-object CatalogTrips : org.jetbrains.exposed.v1.core.Table("catalog_trips") {
-    val id = varchar("id", 255)
+object CatalogTrips : IntIdTable("catalog_trips") {
     val title = varchar("title", 255)
     val imageUrl = text("image_url").nullable()
     val durationDays = integer("duration_days")
@@ -36,16 +48,18 @@ object CatalogTrips : org.jetbrains.exposed.v1.core.Table("catalog_trips") {
     val priceBase = decimal("price_base", 10, 2).nullable()
     val priceSingleSupplement = decimal("price_single_supplement", 10, 2).nullable()
     val priceTaxes = decimal("price_taxes", 10, 2).nullable()
+    val route = array<String>("route", TextColumnType())
+    val includes = array<String>("includes", TextColumnType()).nullable()
+    val notIncluded = array<String>("not_included", TextColumnType()).nullable()
+    val requirements = array<String>("requirements", TextColumnType()).nullable()
     val url = text("url").nullable()
     val embeddingText = text("embedding_text").nullable()
     val createdAt = timestampWithTimeZone("created_at")
     val updatedAt = timestampWithTimeZone("updated_at")
-
-    override val primaryKey = PrimaryKey(id)
 }
 
 object CatalogTripDepartures : UUIDTable("catalog_trip_departures") {
-    val catalogTripId = varchar("catalog_trip_id", 255).references(CatalogTrips.id)
+    val catalogTripId = reference("catalog_trip_id", CatalogTrips.id)
     val departureDate = date("departure_date")
     val returnDate = date("return_date").nullable()
     val maxParticipants = integer("max_participants").nullable()
@@ -61,7 +75,7 @@ object CatalogTripDepartures : UUIDTable("catalog_trip_departures") {
 object UserTrips : UUIDTable("user_trips") {
     val userId = uuid("user_id")
     val type = varchar("type", 32).default("group") // group | custom
-    val catalogTripId = reference("catalog_trip_id", CatalogTrips.id)
+    val catalogTripId = reference("catalog_trip_id", CatalogTrips.id).nullable()
     val departureId = reference("departure_id", CatalogTripDepartures.id).nullable()
     val title = varchar("title", 255).nullable()
     val status = varchar("status", 32).default("pending") // pending, confirmed, paid, completed, cancelled

@@ -5,10 +5,16 @@ import ai.koog.ktor.Koog
 import ai.koog.prompt.streaming.StreamFrame
 import com.francoherrero.ai_agent_multiplatform.ai.TripsTools
 import com.francoherrero.ai_agent_multiplatform.auth.SupabaseAuthService
+import com.francoherrero.ai_agent_multiplatform.db.AdminCatalogRepository
 import com.francoherrero.ai_agent_multiplatform.db.ChatRepository
 import com.francoherrero.ai_agent_multiplatform.db.DatabaseFactory
 import com.francoherrero.ai_agent_multiplatform.repository.TripsRepository
 import com.francoherrero.ai_agent_multiplatform.db.UserTripsRepository
+import com.francoherrero.ai_agent_multiplatform.db.AdminTripsRepository
+import com.francoherrero.ai_agent_multiplatform.db.AdminUsersRepository
+import com.francoherrero.ai_agent_multiplatform.routes.adminCatalogRoutes
+import com.francoherrero.ai_agent_multiplatform.routes.adminTripRoutes
+import com.francoherrero.ai_agent_multiplatform.routes.adminUserRoutes
 import com.francoherrero.ai_agent_multiplatform.routes.authRoutes
 import com.francoherrero.ai_agent_multiplatform.routes.chatRoutes
 import com.francoherrero.ai_agent_multiplatform.routes.userRoutes
@@ -78,6 +84,9 @@ fun Application.module() {
     DatabaseFactory.init()
     val repo = ChatRepository()
     val userTripsRepo = UserTripsRepository()
+    val adminCatalogRepo = AdminCatalogRepository()
+    val adminUsersRepo = AdminUsersRepository()
+    val adminTripsRepo = AdminTripsRepository()
 
     // Supabase configuration from environment
     val supabaseUrl = System.getenv("SUPABASE_URL") ?: error("SUPABASE_URL not set")
@@ -102,15 +111,16 @@ fun Application.module() {
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Delete)
 
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Authorization)
 
-        // optional, but often helpful
-        allowNonSimpleContentTypes = true
+        exposeHeader("X-Total-Count")
 
-        // If later you use cookies/auth:
-        // allowCredentials = true
+        allowNonSimpleContentTypes = true
     }
 
     install(Authentication) {
@@ -129,6 +139,25 @@ fun Application.module() {
             }
             challenge { _, _ ->
                 call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "Invalid or expired token"))
+            }
+        }
+
+        jwt("admin") {
+            verifier(jwkProvider) {
+                withAudience("authenticated")
+                withIssuer("$supabaseUrl/auth/v1")
+            }
+            validate { credential ->
+                val userId = credential.payload.subject
+                val role = credential.payload.getClaim("user_role")?.asString()
+                if (userId != null && role == "admin") {
+                    JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
+            }
+            challenge { _, _ ->
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "Admin access required"))
             }
         }
     }
@@ -168,5 +197,8 @@ fun Application.module() {
         authRoutes(authService)
         chatRoutes(repo)
         userRoutes(userTripsRepo, TripsRepository(loadViajesJsonText()))
+        adminCatalogRoutes(adminCatalogRepo)
+        adminUserRoutes(adminUsersRepo)
+        adminTripRoutes(adminTripsRepo)
     }
 }

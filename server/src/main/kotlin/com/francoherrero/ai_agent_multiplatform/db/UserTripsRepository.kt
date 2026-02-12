@@ -141,7 +141,7 @@ class UserTripsRepository {
             id = this[UserTrips.id].value.toString(),
             userId = this[UserTrips.userId].toString(),
             type = TripType.valueOf(this[UserTrips.type].uppercase()),
-            catalogTripId = this[UserTrips.catalogTripId],
+            catalogTripId = this[UserTrips.catalogTripId]?.value,
             departureId = this[UserTrips.departureId]?.toString(),
             title = this[UserTrips.title],
             status = TripStatus.valueOf(this[UserTrips.status].uppercase()),
@@ -151,7 +151,8 @@ class UserTripsRepository {
             currency = this[UserTrips.currency],
             notes = this[UserTrips.notes],
             createdAt = this[UserTrips.createdAt].toString(),
-            updatedAt = this[UserTrips.updatedAt].toString()
+            updatedAt = this[UserTrips.updatedAt].toString(),
+            userName = this[UserProfiles.firstName].toString()
         )
     }
 }

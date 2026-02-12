@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:www.suajili.com.ar)",
       "Bash(./gradlew:*)",
-      "Bash(./run-server.sh:*)"
+      "Bash(./run-server.sh:*)",
+      "Bash(pushd:*)",
+      "Bash(/Users/fherrero/.volta/bin/pnpm build)"
     ]
   }
 }

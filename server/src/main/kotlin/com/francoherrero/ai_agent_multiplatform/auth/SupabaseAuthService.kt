@@ -46,6 +46,8 @@ class SupabaseAuthService(
             }
 
             if (response.status == HttpStatusCode.OK) {
+                val body = response.bodyAsText()
+                println("BODY: $body")
                 val authResponse = response.body<AuthResponse>()
                 AuthResult.Success(authResponse)
             } else {

@@ -50,12 +50,15 @@ data class UserTripDto(
     @SerialName("user_id")
     val userId: String,
 
+    @SerialName("user_name")
+    val userName: String,
+
     // Trip type
     val type: TripType = TripType.GROUP,
 
     // For group trips: reference to catalog
     @SerialName("catalog_trip_id")
-    val catalogTripId: String? = null,
+    val catalogTripId: Int? = null,
     @SerialName("departure_id")
     val departureId: String? = null,
 
@@ -275,4 +278,29 @@ data class AddDestinationRequest(
     val nights: Int? = null,
     val accommodation: String? = null,
     val notes: String? = null
+)
+
+// ============================================
+// ADMIN REQUEST (for admin CRUD)
+// ============================================
+
+@Serializable
+data class AdminTripRequest(
+    @SerialName("user_id")
+    val userId: String? = null,
+    val type: TripType? = null,
+    @SerialName("catalog_trip_id")
+    val catalogTripId: Int? = null,
+    @SerialName("departure_id")
+    val departureId: String? = null,
+    val title: String? = null,
+    val status: TripStatus? = null,
+    @SerialName("departure_date")
+    val departureDate: String? = null,
+    @SerialName("return_date")
+    val returnDate: String? = null,
+    @SerialName("total_price")
+    val totalPrice: Double? = null,
+    val currency: String? = null,
+    val notes: String? = null,
 )
