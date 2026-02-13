@@ -106,7 +106,7 @@ fun Application.module() {
         allowHost("localhost:3000", schemes = listOf("http"))
         allowHost("10.0.2.2", schemes = listOf("http"))
         allowHost("localhost", schemes = listOf("http"))
-        allowHost("suajili.vercel.app", schemes = listOf("https"))
+        allowHost("suajili-admin.vercel.app", schemes = listOf("https"))
 
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
